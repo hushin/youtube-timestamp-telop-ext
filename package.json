@@ -15,8 +15,8 @@
     "postinstall": "wxt prepare && lefthook install",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint --type-aware",
-    "lint:fix": "oxlint --type-aware --fix"
+    "lint": "oxlint --type-aware --type-check",
+    "lint:fix": "pnpm lint --fix"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.7",
