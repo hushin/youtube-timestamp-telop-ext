@@ -13,6 +13,15 @@
   let settingsVisible = $state(false)
   let apiKeyInput = $state(danmakuState.config.apiKey)
 
+  let listEl = $state<HTMLDivElement | null>(null)
+  let userScrolledUntil = 0
+  let programmaticScrollUntil = 0
+
+  function handleUserScroll() {
+    if (Date.now() < programmaticScrollUntil) return
+    userScrolledUntil = Date.now() + 5000
+  }
+
   // 現在再生中のコメントを特定
   let closestIndex = $derived.by(() => {
     let best = -1
@@ -25,6 +34,19 @@
       }
     }
     return best
+  })
+
+  $effect(() => {
+    if (!listEl || closestIndex < 0) return
+    if (Date.now() < userScrolledUntil) return
+    const item = listEl.children[closestIndex] as HTMLElement | undefined
+    if (!item) return
+    programmaticScrollUntil = Date.now() + 600
+    const itemRect = item.getBoundingClientRect()
+    const containerRect = listEl.getBoundingClientRect()
+    const targetTop =
+      listEl.scrollTop + itemRect.top - containerRect.top - listEl.clientHeight / 2 + item.offsetHeight / 2
+    listEl.scrollTo({ top: targetTop, behavior: 'smooth' })
   })
 
   function toggleDanmaku() {
@@ -161,7 +183,7 @@
     {/if}
   </div>
 
-  <div class="danmaku-comment-list">
+  <div class="danmaku-comment-list" bind:this={listEl} onscroll={handleUserScroll}>
     {#if danmakuState.comments.length === 0}
       <div class="empty-state">
         <div class="empty-state-icon">💬</div>

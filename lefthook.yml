@@ -4,5 +4,6 @@ pre-commit:
       run: pnpm lint:fix {staged_files}
       stage_fixed: true
     format:
+      glob: '*.{ts,js}'
       run: pnpm fmt {staged_files}
       stage_fixed: true
