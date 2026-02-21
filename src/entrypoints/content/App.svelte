@@ -206,7 +206,7 @@
           }}
         >
           <span class="dl-time">{comment.timeStr}</span>
-          <div class="dl-text">{comment.text}</div>
+          <div class="dl-text">{comment.fullText}</div>
         </div>
       {/each}
     {/if}

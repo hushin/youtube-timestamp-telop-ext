@@ -42,11 +42,11 @@ export function extractTimestampedComments(commentText: string, author: string):
     const time = parseTimestamp(match[1]);
     if (time === null || time < 0) continue;
 
-    let text = commentText.replace(TIMESTAMP_RE, '').trim();
-    if (!text) text = commentText;
-    if (text.length > 60) text = text.substring(0, 57) + '...';
+    let fullText = commentText.replace(TIMESTAMP_RE, '').trim();
+    if (!fullText) fullText = commentText;
+    const text = fullText.length > 60 ? fullText.substring(0, 57) + '...' : fullText;
 
-    results.push({ time, text, author, timeStr: formatTime(time) });
+    results.push({ time, text, fullText, author, timeStr: formatTime(time) });
     break; // 最初のタイムスタンプのみ
   }
 
@@ -61,7 +61,7 @@ export function deduplicateComments(comments: DanmakuComment[]): DanmakuComment[
 
   const seen = new Set<string>();
   return comments.filter((c) => {
-    const key = `${c.time}:${c.text}`;
+    const key = `${c.time}:${c.fullText}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;

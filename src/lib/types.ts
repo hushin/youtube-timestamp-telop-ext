@@ -2,8 +2,10 @@
 export interface DanmakuComment {
   /** 動画内の時刻（秒） */
   time: number;
-  /** 弾幕として表示するテキスト */
+  /** 弾幕として表示するテキスト（60文字以内に省略済み） */
   text: string;
+  /** リスト表示用の省略前テキスト */
+  fullText: string;
   /** コメント投稿者名 */
   author: string;
   /** フォーマット済み時刻文字列（例: "1:23"） */
