@@ -46,6 +46,7 @@ export class DanmakuRenderer {
     el.style.fontSize = `${this.config.fontSize}px`;
     el.style.opacity = String(this.config.opacity);
     el.style.color = '#fff';
+    el.style.visibility = 'hidden';
 
     this.container.appendChild(el);
 
@@ -55,6 +56,8 @@ export class DanmakuRenderer {
     const lane = this.getAvailableLane();
     const lineHeight = this.config.fontSize * 1.4;
     el.style.top = `${lane * lineHeight}px`;
+    el.style.left = `${containerWidth}px`;
+    el.style.visibility = '';
 
     const travelDuration = this.config.speed * 1000;
     const textPassTime = (textWidth / (containerWidth + textWidth)) * travelDuration;
