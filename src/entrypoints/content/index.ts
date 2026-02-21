@@ -157,13 +157,12 @@ export default defineContentScript({
         return;
       }
 
-      document.getElementById('danmaku-container')?.remove();
+      // パネルUI（プレーヤー下）— コンテナ作成前にクリーンアップ
+      destroyPanel();
+
       const danmakuContainer = document.createElement('div');
       danmakuContainer.id = 'danmaku-container';
       player.appendChild(danmakuContainer);
-
-      // パネルUI（プレーヤー下）
-      destroyPanel();
       panelHost = document.createElement('div');
 
       const belowPlayer = document.querySelector('#below, ytd-watch-metadata');
