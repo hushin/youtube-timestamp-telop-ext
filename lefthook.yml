@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    lint:
+      run: pnpm lint:fix {staged_files}
+      stage_fixed: true
+    format:
+      run: pnpm fmt {staged_files}
+      stage_fixed: true

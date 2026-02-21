@@ -12,14 +12,16 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "postinstall": "wxt prepare",
+    "postinstall": "wxt prepare && lefthook install",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
-    "lint": "oxlint --type-aware"
+    "lint": "oxlint --type-aware",
+    "lint:fix": "oxlint --type-aware --fix"
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.7",
     "@wxt-dev/module-svelte": "^2.0.4",
+    "lefthook": "^2.1.1",
     "oxfmt": "^0.34.0",
     "oxlint": "^1.49.0",
     "oxlint-tsgolint": "^0.14.2",
