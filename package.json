@@ -1,8 +1,8 @@
 {
-  "name": "wxt-svelte-starter",
-  "version": "0.0.0",
+  "name": "youtube-danmaku-player-ext",
+  "version": "2.1.0",
   "private": true,
-  "description": "manifest.json description",
+  "description": "YouTubeのタイムスタンプ付きコメントをニコニコ風弾幕として再生するブラウザ拡張",
   "type": "module",
   "scripts": {
     "dev": "wxt",

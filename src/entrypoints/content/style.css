@@ -1,0 +1,330 @@
+/* ========================================
+   YouTube Danmaku Player - ニコニコ風弾幕コメント
+   ======================================== */
+
+/* ----------------------------------------
+   弾幕オーバーレイ（プレーヤー内）
+   ---------------------------------------- */
+#danmaku-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.danmaku-comment {
+  position: absolute;
+  white-space: nowrap;
+  font-family: 'Hiragino Kaku Gothic Pro', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  pointer-events: none;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    -2px 0 0 #000,
+    2px 0 0 #000,
+    0 -2px 0 #000,
+    0 2px 0 #000;
+  color: #fff;
+}
+
+/* ----------------------------------------
+   外部パネル（プレーヤー下）
+   ---------------------------------------- */
+#danmaku-panel {
+  background: #0f0f0f;
+  border: 1px solid #303030;
+  border-radius: 12px;
+  margin-top: 12px;
+  padding: 0;
+  font-family: 'Hiragino Kaku Gothic Pro', 'Yu Gothic', 'Meiryo', sans-serif;
+  overflow: hidden;
+}
+
+.danmaku-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #181818;
+  border-bottom: 1px solid #272727;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.danmaku-panel-header .dp-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.danmaku-panel-header .dp-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#danmaku-panel .dp-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f1f1;
+  white-space: nowrap;
+}
+
+#danmaku-panel .dp-badge {
+  background: #272727;
+  color: #aaa;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+#danmaku-panel .dp-badge.has-comments {
+  background: #1b3a2d;
+  color: #4ade80;
+}
+
+/* ボタン共通 */
+#danmaku-panel .dp-btn {
+  background: #272727;
+  color: #e0e0e0;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+#danmaku-panel .dp-btn:hover {
+  background: #3a3a3a;
+}
+
+#danmaku-panel .dp-btn.active {
+  background: #c00;
+  color: #fff;
+}
+
+#danmaku-panel .dp-btn.active:hover {
+  background: #e00;
+}
+
+#danmaku-panel .dp-btn.primary {
+  background: #263850;
+  color: #6cb4ee;
+}
+
+#danmaku-panel .dp-btn.primary:hover {
+  background: #2f4a66;
+}
+
+#danmaku-panel .dp-btn.primary:disabled {
+  background: #1a1a1a;
+  color: #555;
+  cursor: not-allowed;
+}
+
+/* 設定行 */
+.danmaku-settings-row {
+  display: none;
+  padding: 10px 16px;
+  background: #141414;
+  border-bottom: 1px solid #272727;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.danmaku-settings-row.visible {
+  display: flex;
+}
+
+.danmaku-settings-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #aaa;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.danmaku-settings-row input[type='range'] {
+  width: 80px;
+  accent-color: #6cb4ee;
+}
+
+.danmaku-settings-row .setting-val {
+  color: #888;
+  font-size: 11px;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* API Key 入力 */
+.danmaku-settings-row .api-key-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.danmaku-settings-row .api-key-group input[type='text'] {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  padding: 3px 8px;
+  font-size: 11px;
+  width: 220px;
+  font-family: monospace;
+}
+
+.danmaku-settings-row .api-key-group input[type='text']:focus {
+  border-color: #6cb4ee;
+  outline: none;
+}
+
+/* 自動取得チェックボックス */
+.danmaku-settings-row .checkbox-label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.danmaku-settings-row .checkbox-label input[type='checkbox'] {
+  accent-color: #6cb4ee;
+  margin-right: 4px;
+}
+
+/* ステータスバー */
+.danmaku-status-bar {
+  display: none;
+  padding: 6px 16px;
+  background: #111;
+  border-bottom: 1px solid #272727;
+  font-size: 12px;
+  color: #888;
+  align-items: center;
+  gap: 8px;
+}
+
+.danmaku-status-bar.visible {
+  display: flex;
+}
+
+.danmaku-status-bar .spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #555;
+  border-top-color: #6cb4ee;
+  border-radius: 50%;
+  animation: danmaku-spin 0.6s linear infinite;
+}
+
+@keyframes danmaku-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.danmaku-status-bar .status-error {
+  color: #f87171;
+}
+
+/* ----------------------------------------
+   コメント一覧
+   ---------------------------------------- */
+.danmaku-comment-list {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #0f0f0f;
+}
+
+.danmaku-comment-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.danmaku-comment-list::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.danmaku-comment-list::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 3px;
+}
+
+.danmaku-comment-list .empty-state {
+  padding: 40px 16px;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.empty-state-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  opacity: 0.4;
+}
+
+.danmaku-list-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 16px;
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+  transition: background 0.1s;
+  gap: 12px;
+}
+
+.danmaku-list-item:hover {
+  background: #1a1a2e;
+}
+
+.danmaku-list-item:last-child {
+  border-bottom: none;
+}
+
+.danmaku-list-item .dl-time {
+  color: #6cb4ee;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  min-width: 52px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.danmaku-list-item .dl-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.danmaku-list-item .dl-text {
+  color: #d4d4d4;
+  font-size: 13px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.danmaku-list-item .dl-author {
+  color: #666;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.danmaku-list-item.now-playing {
+  background: #1a1a2e;
+  border-left: 3px solid #6cb4ee;
+  padding-left: 13px;
+}
