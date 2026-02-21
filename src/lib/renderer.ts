@@ -43,7 +43,8 @@ export class DanmakuRenderer {
     const el = document.createElement('div');
     el.className = 'danmaku-comment';
     el.textContent = comment.text;
-    el.style.fontSize = `${this.config.fontSize}px`;
+    const fontSize = this.getActualFontSize();
+    el.style.fontSize = `${fontSize}px`;
     el.style.opacity = String(this.config.opacity);
     el.style.color = '#fff';
     el.style.visibility = 'hidden';
@@ -54,7 +55,7 @@ export class DanmakuRenderer {
     const containerWidth = this.container.offsetWidth;
 
     const lane = this.getAvailableLane();
-    const lineHeight = this.config.fontSize * 1.4;
+    const lineHeight = fontSize * 1.4;
     el.style.top = `${lane * lineHeight}px`;
     el.style.left = `${containerWidth}px`;
     el.style.visibility = '';
@@ -118,9 +119,15 @@ export class DanmakuRenderer {
     }
   }
 
+  /** コンテナ幅に応じてfontSizeをスケール */
+  private getActualFontSize(): number {
+    const containerWidth = this.container?.offsetWidth ?? 720;
+    return (this.config.fontSize / 720) * containerWidth;
+  }
+
   private getAvailableLane(): number {
     const containerHeight = this.container?.offsetHeight ?? 600;
-    const lineHeight = this.config.fontSize * 1.4;
+    const lineHeight = this.getActualFontSize() * 1.4;
     const numLanes = Math.floor((containerHeight * this.config.density) / lineHeight);
 
     if (this.lanes.length !== numLanes) {
