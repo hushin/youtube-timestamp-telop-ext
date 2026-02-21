@@ -12,6 +12,7 @@
 
   let settingsVisible = $state(false)
   let apiKeyInput = $state(danmakuState.config.apiKey)
+  let showApiKey = $state(false)
 
   let listEl = $state<HTMLDivElement | null>(null)
   let userScrolledUntil = 0
@@ -120,12 +121,15 @@
     <label class="api-key-group">
       API Key
       <input
-        type="text"
+        type={showApiKey ? 'text' : 'password'}
         placeholder="YouTube Data API v3 キーを入力"
         bind:value={apiKeyInput}
         spellcheck="false"
         autocomplete="off"
       />
+      <button class="dp-btn" onclick={() => (showApiKey = !showApiKey)}>
+        {showApiKey ? '隠す' : '表示'}
+      </button>
       <button class="dp-btn" onclick={saveApiKey}>保存</button>
     </label>
     <label>

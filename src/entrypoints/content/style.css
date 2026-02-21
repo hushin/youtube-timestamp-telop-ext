@@ -177,7 +177,8 @@
   gap: 6px;
 }
 
-.danmaku-settings-row .api-key-group input[type='text'] {
+.danmaku-settings-row .api-key-group input[type='text'],
+.danmaku-settings-row .api-key-group input[type='password'] {
   background: #222;
   border: 1px solid #444;
   border-radius: 4px;
@@ -188,7 +189,8 @@
   font-family: monospace;
 }
 
-.danmaku-settings-row .api-key-group input[type='text']:focus {
+.danmaku-settings-row .api-key-group input[type='text']:focus,
+.danmaku-settings-row .api-key-group input[type='password']:focus {
   border-color: #6cb4ee;
   outline: none;
 }
