@@ -36,5 +36,5 @@ export function saveConfig(config: DanmakuConfig): void {
   for (const key of PERSISTED_KEYS) {
     (data as Record<string, unknown>)[key] = config[key];
   }
-  browser.storage.local.set({ [STORAGE_KEY]: data });
+  void browser.storage.local.set({ [STORAGE_KEY]: data });
 }

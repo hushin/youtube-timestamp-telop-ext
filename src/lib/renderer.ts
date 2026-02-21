@@ -121,7 +121,7 @@ export class DanmakuRenderer {
     const numLanes = Math.floor((containerHeight * this.config.density) / lineHeight);
 
     if (this.lanes.length !== numLanes) {
-      this.lanes = new Array(numLanes).fill(0);
+      this.lanes = Array.from({ length: numLanes }, () => 0);
     }
 
     const now = performance.now();

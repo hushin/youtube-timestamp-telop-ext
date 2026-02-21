@@ -1,6 +1,6 @@
 import { mount, unmount } from 'svelte';
 import type { DanmakuComment } from '../../lib/types';
-import { loadConfig, saveConfig } from '../../lib/config';
+import { loadConfig } from '../../lib/config';
 import { deduplicateComments } from '../../lib/parser';
 import { fetchComments, APIError, API_ERROR_MESSAGES } from '../../lib/api';
 import { DanmakuRenderer } from '../../lib/renderer';
@@ -127,7 +127,7 @@ export default defineContentScript({
 
     function destroyPanel(): void {
       if (panelComponent) {
-        unmount(panelComponent);
+        void unmount(panelComponent);
         panelComponent = null;
       }
       if (panelHost) {
