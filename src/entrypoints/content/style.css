@@ -305,22 +305,13 @@
   padding-top: 1px;
 }
 
-.danmaku-list-item .dl-body {
+.danmaku-list-item .dl-text {
   flex: 1;
   min-width: 0;
-}
-
-.danmaku-list-item .dl-text {
   color: #d4d4d4;
   font-size: 13px;
   line-height: 1.4;
   word-break: break-word;
-}
-
-.danmaku-list-item .dl-author {
-  color: #666;
-  font-size: 11px;
-  margin-top: 2px;
 }
 
 .danmaku-list-item.now-playing {

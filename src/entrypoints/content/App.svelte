@@ -180,10 +180,7 @@
           }}
         >
           <span class="dl-time">{comment.timeStr}</span>
-          <div class="dl-body">
-            <div class="dl-text">{comment.text}</div>
-            <div class="dl-author">{comment.author}</div>
-          </div>
+          <div class="dl-text">{comment.text}</div>
         </div>
       {/each}
     {/if}
