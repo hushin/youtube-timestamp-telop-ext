@@ -9,7 +9,7 @@ import App from './App.svelte';
 import './style.css';
 
 export default defineContentScript({
-  matches: ['*://www.youtube.com/watch*'],
+  matches: ['*://www.youtube.com/*'],
   runAt: 'document_idle',
 
   main() {
@@ -235,6 +235,8 @@ export default defineContentScript({
     setInterval(checkUrlChange, 1000);
 
     // --- Boot ---
-    setTimeout(init, 2000);
+    if (location.href.includes('/watch')) {
+      setTimeout(init, 2000);
+    }
   },
 });
