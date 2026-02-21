@@ -1,6 +1,6 @@
 {
   "name": "youtube-danmaku-player-ext",
-  "version": "2.1.0",
+  "version": "0.1.0",
   "private": true,
   "description": "YouTubeのタイムスタンプ付きコメントをニコニコ風弾幕として再生するブラウザ拡張",
   "type": "module",

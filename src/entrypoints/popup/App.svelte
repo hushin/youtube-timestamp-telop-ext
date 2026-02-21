@@ -38,7 +38,7 @@
   </ul>
 </div>
 
-<div class="footer">v2.1.0 — YouTube Danmaku Player Extension</div>
+<div class="footer">v0.1.0 — YouTube Danmaku Player Extension</div>
 
 <style>
   h1 {
