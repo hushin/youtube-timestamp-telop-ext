@@ -243,6 +243,18 @@
 }
 
 /* ----------------------------------------
+   サイドバーモード（2カラムレイアウト時）
+   ---------------------------------------- */
+[data-layout="sidebar"] #danmaku-panel {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+[data-layout="sidebar"] .danmaku-comment-list {
+  max-height: min(600px, calc(100vh - 250px));
+}
+
+/* ----------------------------------------
    コメント一覧
    ---------------------------------------- */
 .danmaku-comment-list {

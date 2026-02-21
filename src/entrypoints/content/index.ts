@@ -23,6 +23,7 @@ export default defineContentScript({
     let panelComponent: Record<string, unknown> | null = null;
     let panelHost: HTMLDivElement | null = null;
     let syncIntervalId: ReturnType<typeof setInterval> | null = null;
+    let layoutObserver: MutationObserver | null = null;
 
     function getVideoId(): string {
       return new URLSearchParams(window.location.search).get('v') ?? '';
@@ -125,7 +126,36 @@ export default defineContentScript({
 
     // --- Init ---
 
+    function isTwoColumnLayout(): boolean {
+      return !!document.querySelector('ytd-watch-flexy[is-two-columns_]');
+    }
+
+    function positionPanel(): void {
+      if (!panelHost) return;
+
+      if (isTwoColumnLayout()) {
+        const secondary = document.querySelector<HTMLElement>('#secondary-inner, #secondary');
+        if (secondary) {
+          secondary.insertBefore(panelHost, secondary.firstChild);
+          panelHost.dataset.layout = 'sidebar';
+          return;
+        }
+      }
+
+      // デフォルト: プレーヤー下
+      const belowPlayer = document.querySelector('#below, ytd-watch-metadata');
+      if (belowPlayer?.parentNode) {
+        belowPlayer.parentNode.insertBefore(panelHost, belowPlayer);
+      } else {
+        const player = document.querySelector<HTMLElement>('#movie_player, .html5-video-player');
+        player?.parentNode?.insertBefore(panelHost, player.nextSibling);
+      }
+      panelHost.dataset.layout = 'below';
+    }
+
     function destroyPanel(): void {
+      layoutObserver?.disconnect();
+      layoutObserver = null;
       if (panelComponent) {
         void unmount(panelComponent);
         panelComponent = null;
@@ -164,13 +194,7 @@ export default defineContentScript({
       danmakuContainer.id = 'danmaku-container';
       player.appendChild(danmakuContainer);
       panelHost = document.createElement('div');
-
-      const belowPlayer = document.querySelector('#below, ytd-watch-metadata');
-      if (belowPlayer?.parentNode) {
-        belowPlayer.parentNode.insertBefore(panelHost, belowPlayer);
-      } else {
-        player.parentNode?.insertBefore(panelHost, player.nextSibling);
-      }
+      positionPanel();
 
       panelComponent = mount(App, {
         target: panelHost,
@@ -189,6 +213,16 @@ export default defineContentScript({
           },
         },
       });
+
+      // レイアウト変化を監視（2カラム ↔ 1カラム）
+      const watchFlexy = document.querySelector('ytd-watch-flexy');
+      if (watchFlexy) {
+        layoutObserver = new MutationObserver(positionPanel);
+        layoutObserver.observe(watchFlexy, {
+          attributes: true,
+          attributeFilter: ['is-two-columns_'],
+        });
+      }
 
       // Renderer
       renderer = new DanmakuRenderer(state.config);
