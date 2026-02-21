@@ -27,7 +27,6 @@ export interface DanmakuConfig {
   fontSize: number;
   opacity: number;
   speed: number;
-  density: number;
   maxComments: number;
   timeWindowSec: number;
   autoFetch: boolean;

@@ -127,15 +127,12 @@ export class DanmakuRenderer {
 
   /**
    * レーンインデックスからy座標(px)を計算する。
-   * - 1周目(index < numLanesFirst): density 範囲内の通常位置
+   * - 1周目(index < numLanesFirst): 範囲内の通常位置
    * - 2周目(index >= numLanesFirst): コンテナ全体を使い、lineHeight/2 ずらす
    */
   private getLaneY(laneIndex: number, lineHeight: number): number {
     const containerHeight = this.container?.offsetHeight ?? 600;
-    const numLanesFirst = Math.max(
-      1,
-      Math.floor((containerHeight * this.config.density) / lineHeight),
-    );
+    const numLanesFirst = Math.max(1, Math.floor(containerHeight / lineHeight));
     if (laneIndex < numLanesFirst) {
       return laneIndex * lineHeight;
     }
@@ -147,11 +144,8 @@ export class DanmakuRenderer {
     const containerHeight = this.container?.offsetHeight ?? 600;
     const lineHeight = this.getActualFontSize() * 1.4;
 
-    // 1周目: density 設定で制限されたレーン数
-    const numLanesFirst = Math.max(
-      1,
-      Math.floor((containerHeight * this.config.density) / lineHeight),
-    );
+    // 1周目: 制限されたレーン数
+    const numLanesFirst = Math.max(1, Math.floor(containerHeight / lineHeight));
     // 2周目: コンテナ全体を使ったレーン（半分ずれ）
     const numLanesSecond = Math.max(1, Math.floor(containerHeight / lineHeight));
     const totalLanes = numLanesFirst + numLanesSecond;

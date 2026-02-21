@@ -8,7 +8,6 @@ const PERSISTED_KEYS: (keyof DanmakuConfig)[] = [
   'fontSize',
   'opacity',
   'speed',
-  'density',
   'autoFetch',
   'apiKey',
 ];
@@ -18,7 +17,6 @@ export const DEFAULT_CONFIG: DanmakuConfig = {
   fontSize: 28,
   opacity: 0.85,
   speed: 8,
-  density: 1,
   maxComments: 50,
   timeWindowSec: 2,
   autoFetch: false,
