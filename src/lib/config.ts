@@ -18,7 +18,7 @@ export const DEFAULT_CONFIG: DanmakuConfig = {
   fontSize: 28,
   opacity: 0.85,
   speed: 8,
-  density: 0.7,
+  density: 1,
   maxComments: 50,
   timeWindowSec: 2,
   autoFetch: false,

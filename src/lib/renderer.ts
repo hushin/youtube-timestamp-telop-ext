@@ -56,7 +56,7 @@ export class DanmakuRenderer {
 
     const lane = this.getAvailableLane();
     const lineHeight = fontSize * 1.4;
-    el.style.top = `${lane * lineHeight}px`;
+    el.style.top = `${this.getLaneY(lane, lineHeight)}px`;
     el.style.left = `${containerWidth}px`;
     el.style.visibility = '';
 
@@ -125,21 +125,57 @@ export class DanmakuRenderer {
     return (this.config.fontSize / 720) * containerWidth;
   }
 
+  /**
+   * レーンインデックスからy座標(px)を計算する。
+   * - 1周目(index < numLanesFirst): density 範囲内の通常位置
+   * - 2周目(index >= numLanesFirst): コンテナ全体を使い、lineHeight/2 ずらす
+   */
+  private getLaneY(laneIndex: number, lineHeight: number): number {
+    const containerHeight = this.container?.offsetHeight ?? 600;
+    const numLanesFirst = Math.max(
+      1,
+      Math.floor((containerHeight * this.config.density) / lineHeight),
+    );
+    if (laneIndex < numLanesFirst) {
+      return laneIndex * lineHeight;
+    }
+    const secondIndex = laneIndex - numLanesFirst;
+    return secondIndex * lineHeight + lineHeight / 2;
+  }
+
   private getAvailableLane(): number {
     const containerHeight = this.container?.offsetHeight ?? 600;
     const lineHeight = this.getActualFontSize() * 1.4;
-    const numLanes = Math.floor((containerHeight * this.config.density) / lineHeight);
 
-    if (this.lanes.length !== numLanes) {
-      this.lanes = Array.from({ length: numLanes }, () => 0);
+    // 1周目: density 設定で制限されたレーン数
+    const numLanesFirst = Math.max(
+      1,
+      Math.floor((containerHeight * this.config.density) / lineHeight),
+    );
+    // 2周目: コンテナ全体を使ったレーン（半分ずれ）
+    const numLanesSecond = Math.max(1, Math.floor(containerHeight / lineHeight));
+    const totalLanes = numLanesFirst + numLanesSecond;
+
+    if (this.lanes.length !== totalLanes) {
+      this.lanes = Array.from({ length: totalLanes }, () => 0);
     }
 
     const now = performance.now();
+
+    // 1周目の空きレーンを優先
+    for (let i = 0; i < numLanesFirst; i++) {
+      if (this.lanes[i] <= now) return i;
+    }
+
+    // 1周目が全て埋まっていたら2周目の空きレーンを使う
+    for (let i = numLanesFirst; i < totalLanes; i++) {
+      if (this.lanes[i] <= now) return i;
+    }
+
+    // 全レーン埋まっていたら最も早く空くレーン
     let bestLane = 0;
     let bestTime = Infinity;
-
-    for (let i = 0; i < numLanes; i++) {
-      if (this.lanes[i] <= now) return i;
+    for (let i = 0; i < totalLanes; i++) {
       if (this.lanes[i] < bestTime) {
         bestTime = this.lanes[i];
         bestLane = i;
