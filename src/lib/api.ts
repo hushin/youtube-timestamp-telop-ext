@@ -1,4 +1,4 @@
-import type { DanmakuComment, YouTubeCommentThreadsResponse, YouTubeAPIError } from './types';
+import type { TimestampComment, YouTubeCommentThreadsResponse, YouTubeAPIError } from './types';
 import { extractTimestampedComments } from './parser';
 
 const API_BASE = 'https://www.googleapis.com/youtube/v3/commentThreads';
@@ -29,12 +29,12 @@ export async function fetchComments(
   videoId: string,
   apiKey: string,
   onProgress?: (found: number, pages: number) => void,
-): Promise<DanmakuComment[]> {
+): Promise<TimestampComment[]> {
   if (!apiKey) {
     throw new APIError('API_KEY_MISSING');
   }
 
-  const allComments: DanmakuComment[] = [];
+  const allComments: TimestampComment[] = [];
   let pageToken = '';
   let pages = 0;
 

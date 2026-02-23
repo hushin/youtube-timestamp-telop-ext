@@ -1,9 +1,9 @@
-import type { DanmakuComment, DanmakuConfig, StatusType } from '../../lib/types';
+import type { TimestampComment, TelopConfig, StatusType } from '../../lib/types';
 import { DEFAULT_CONFIG } from '../../lib/config';
 
-class DanmakuState {
-  config: DanmakuConfig = $state({ ...DEFAULT_CONFIG });
-  comments: DanmakuComment[] = $state([]);
+class TelopState {
+  config: TelopConfig = $state({ ...DEFAULT_CONFIG });
+  comments: TimestampComment[] = $state([]);
   statusMessage: string = $state('');
   statusType: StatusType = $state('info');
   statusVisible: boolean = $state(false);
@@ -11,4 +11,4 @@ class DanmakuState {
   currentTime: number = $state(0);
 }
 
-export const danmakuState = new DanmakuState();
+export const telopState = new TelopState();

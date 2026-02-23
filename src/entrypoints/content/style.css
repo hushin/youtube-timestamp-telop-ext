@@ -1,11 +1,11 @@
 /* ========================================
-   YouTube Danmaku Player - ニコニコ風弾幕コメント
+   YouTube Timestamp Telop - タイムスタンプコメント
    ======================================== */
 
 /* ----------------------------------------
-   弾幕オーバーレイ（プレーヤー内）
+   コメントオーバーレイ（プレーヤー内）
    ---------------------------------------- */
-#danmaku-container {
+#telop-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@
   z-index: 50;
 }
 
-.danmaku-comment {
+.telop-comment {
   position: absolute;
   white-space: nowrap;
   font-family: 'Hiragino Kaku Gothic Pro', 'Yu Gothic', 'Meiryo', sans-serif;
@@ -38,7 +38,7 @@
 /* ----------------------------------------
    外部パネル（プレーヤー下）
    ---------------------------------------- */
-#danmaku-panel {
+#telop-panel {
   background: #0f0f0f;
   border: 1px solid #303030;
   border-radius: 12px;
@@ -48,7 +48,7 @@
   overflow: hidden;
 }
 
-.danmaku-panel-header {
+.telop-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,26 +59,26 @@
   flex-wrap: wrap;
 }
 
-.danmaku-panel-header .dp-left {
+.telop-panel-header .dp-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.danmaku-panel-header .dp-right {
+.telop-panel-header .dp-right {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-#danmaku-panel .dp-title {
+#telop-panel .dp-title {
   font-size: 14px;
   font-weight: 700;
   color: #f1f1f1;
   white-space: nowrap;
 }
 
-#danmaku-panel .dp-badge {
+#telop-panel .dp-badge {
   background: #272727;
   color: #aaa;
   font-size: 11px;
@@ -87,13 +87,13 @@
   white-space: nowrap;
 }
 
-#danmaku-panel .dp-badge.has-comments {
+#telop-panel .dp-badge.has-comments {
   background: #1b3a2d;
   color: #4ade80;
 }
 
 /* ボタン共通 */
-#danmaku-panel .dp-btn {
+#telop-panel .dp-btn {
   background: #272727;
   color: #e0e0e0;
   border: none;
@@ -106,36 +106,36 @@
   white-space: nowrap;
 }
 
-#danmaku-panel .dp-btn:hover {
+#telop-panel .dp-btn:hover {
   background: #3a3a3a;
 }
 
-#danmaku-panel .dp-btn.active {
+#telop-panel .dp-btn.active {
   background: #c00;
   color: #fff;
 }
 
-#danmaku-panel .dp-btn.active:hover {
+#telop-panel .dp-btn.active:hover {
   background: #e00;
 }
 
-#danmaku-panel .dp-btn.primary {
+#telop-panel .dp-btn.primary {
   background: #263850;
   color: #6cb4ee;
 }
 
-#danmaku-panel .dp-btn.primary:hover {
+#telop-panel .dp-btn.primary:hover {
   background: #2f4a66;
 }
 
-#danmaku-panel .dp-btn.primary:disabled {
+#telop-panel .dp-btn.primary:disabled {
   background: #1a1a1a;
   color: #555;
   cursor: not-allowed;
 }
 
 /* 設定行 */
-.danmaku-settings-row {
+.telop-settings-row {
   display: none;
   padding: 10px 16px;
   background: #141414;
@@ -145,11 +145,11 @@
   align-items: center;
 }
 
-.danmaku-settings-row.visible {
+.telop-settings-row.visible {
   display: flex;
 }
 
-.danmaku-settings-row label {
+.telop-settings-row label {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -158,12 +158,12 @@
   white-space: nowrap;
 }
 
-.danmaku-settings-row input[type='range'] {
+.telop-settings-row input[type='range'] {
   width: 80px;
   accent-color: #6cb4ee;
 }
 
-.danmaku-settings-row .setting-val {
+.telop-settings-row .setting-val {
   color: #888;
   font-size: 11px;
   min-width: 28px;
@@ -171,14 +171,14 @@
 }
 
 /* API Key 入力 */
-.danmaku-settings-row .api-key-group {
+.telop-settings-row .api-key-group {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.danmaku-settings-row .api-key-group input[type='text'],
-.danmaku-settings-row .api-key-group input[type='password'] {
+.telop-settings-row .api-key-group input[type='text'],
+.telop-settings-row .api-key-group input[type='password'] {
   background: #222;
   border: 1px solid #444;
   border-radius: 4px;
@@ -189,25 +189,25 @@
   font-family: monospace;
 }
 
-.danmaku-settings-row .api-key-group input[type='text']:focus,
-.danmaku-settings-row .api-key-group input[type='password']:focus {
+.telop-settings-row .api-key-group input[type='text']:focus,
+.telop-settings-row .api-key-group input[type='password']:focus {
   border-color: #6cb4ee;
   outline: none;
 }
 
 /* 自動取得チェックボックス */
-.danmaku-settings-row .checkbox-label {
+.telop-settings-row .checkbox-label {
   cursor: pointer;
   user-select: none;
 }
 
-.danmaku-settings-row .checkbox-label input[type='checkbox'] {
+.telop-settings-row .checkbox-label input[type='checkbox'] {
   accent-color: #6cb4ee;
   margin-right: 4px;
 }
 
 /* ステータスバー */
-.danmaku-status-bar {
+.telop-status-bar {
   display: none;
   padding: 6px 16px;
   background: #111;
@@ -218,66 +218,66 @@
   gap: 8px;
 }
 
-.danmaku-status-bar.visible {
+.telop-status-bar.visible {
   display: flex;
 }
 
-.danmaku-status-bar .spinner {
+.telop-status-bar .spinner {
   display: inline-block;
   width: 12px;
   height: 12px;
   border: 2px solid #555;
   border-top-color: #6cb4ee;
   border-radius: 50%;
-  animation: danmaku-spin 0.6s linear infinite;
+  animation: telop-spin 0.6s linear infinite;
 }
 
-@keyframes danmaku-spin {
+@keyframes telop-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.danmaku-status-bar .status-error {
+.telop-status-bar .status-error {
   color: #f87171;
 }
 
 /* ----------------------------------------
    サイドバーモード（2カラムレイアウト時）
    ---------------------------------------- */
-[data-layout="sidebar"] #danmaku-panel {
+[data-layout="sidebar"] #telop-panel {
   margin-top: 0;
   margin-bottom: 8px;
 }
 
-[data-layout="sidebar"] .danmaku-comment-list {
+[data-layout="sidebar"] .telop-comment-list {
   max-height: min(600px, calc(100vh - 250px));
 }
 
 /* ----------------------------------------
    コメント一覧
    ---------------------------------------- */
-.danmaku-comment-list {
+.telop-comment-list {
   max-height: 320px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #444 #0f0f0f;
 }
 
-.danmaku-comment-list::-webkit-scrollbar {
+.telop-comment-list::-webkit-scrollbar {
   width: 6px;
 }
 
-.danmaku-comment-list::-webkit-scrollbar-track {
+.telop-comment-list::-webkit-scrollbar-track {
   background: #0f0f0f;
 }
 
-.danmaku-comment-list::-webkit-scrollbar-thumb {
+.telop-comment-list::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 3px;
 }
 
-.danmaku-comment-list .empty-state {
+.telop-comment-list .empty-state {
   padding: 40px 16px;
   text-align: center;
   color: #666;
@@ -291,7 +291,7 @@
   opacity: 0.4;
 }
 
-.danmaku-list-item {
+.telop-list-item {
   display: flex;
   align-items: flex-start;
   padding: 8px 16px;
@@ -301,15 +301,15 @@
   gap: 12px;
 }
 
-.danmaku-list-item:hover {
+.telop-list-item:hover {
   background: #1a1a2e;
 }
 
-.danmaku-list-item:last-child {
+.telop-list-item:last-child {
   border-bottom: none;
 }
 
-.danmaku-list-item .dl-time {
+.telop-list-item .dl-time {
   color: #6cb4ee;
   font-size: 12px;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
@@ -319,7 +319,7 @@
   padding-top: 1px;
 }
 
-.danmaku-list-item .dl-text {
+.telop-list-item .dl-text {
   flex: 1;
   min-width: 0;
   color: #d4d4d4;
@@ -328,7 +328,7 @@
   word-break: break-word;
 }
 
-.danmaku-list-item.now-playing {
+.telop-list-item.now-playing {
   background: #1a1a2e;
   border-left: 3px solid #6cb4ee;
   padding-left: 13px;

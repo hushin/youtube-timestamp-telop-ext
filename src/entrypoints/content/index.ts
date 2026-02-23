@@ -1,10 +1,10 @@
 import { mount, unmount } from 'svelte';
-import type { DanmakuComment } from '../../lib/types';
+import type { TimestampComment } from '../../lib/types';
 import { loadConfig } from '../../lib/config';
 import { deduplicateComments } from '../../lib/parser';
 import { fetchComments, APIError, API_ERROR_MESSAGES } from '../../lib/api';
-import { DanmakuRenderer } from '../../lib/renderer';
-import { danmakuState } from './state.svelte';
+import { TelopRenderer } from '../../lib/renderer';
+import { telopState } from './state.svelte';
 import App from './App.svelte';
 import './style.css';
 
@@ -13,13 +13,13 @@ export default defineContentScript({
   runAt: 'document_idle',
 
   main() {
-    const state = danmakuState;
+    const state = telopState;
 
     let videoEl: HTMLVideoElement | null = null;
     let firedSet = new Set<number>();
     let lastVideoTime = -1;
     let initialized = false;
-    let renderer: DanmakuRenderer | null = null;
+    let renderer: TelopRenderer | null = null;
     let panelComponent: Record<string, unknown> | null = null;
     let panelHost: HTMLDivElement | null = null;
     let syncIntervalId: ReturnType<typeof setInterval> | null = null;
@@ -83,10 +83,10 @@ export default defineContentScript({
         setTimeout(hideStatus, 4000);
 
         console.log(
-          `[YouTube Danmaku Player] ${state.comments.length}件検出 (videoId: ${videoId})`,
+          `[YouTube Timestamp Telop] ${state.comments.length}件検出 (videoId: ${videoId})`,
         );
       } catch (err) {
-        console.error('[YouTube Danmaku Player] Error:', err);
+        console.error('[YouTube Timestamp Telop] Error:', err);
 
         const code = err instanceof APIError ? err.code : String(err);
         const msg = API_ERROR_MESSAGES[code] ?? `コメント取得エラー: ${code}`;
@@ -113,8 +113,8 @@ export default defineContentScript({
       // 一時停止中は発射しない
       if (videoEl.paused) return;
 
-      // 弾幕発射
-      state.comments.forEach((comment: DanmakuComment, index: number) => {
+      // コメント発射
+      state.comments.forEach((comment: TimestampComment, index: number) => {
         if (firedSet.has(index)) return;
         const diff = time - comment.time;
         if (diff >= 0 && diff < state.config.timeWindowSec) {
@@ -164,7 +164,7 @@ export default defineContentScript({
         panelHost.remove();
         panelHost = null;
       }
-      document.getElementById('danmaku-container')?.remove();
+      document.getElementById('telop-container')?.remove();
     }
 
     async function init(): Promise<void> {
@@ -180,7 +180,7 @@ export default defineContentScript({
       }
       videoEl = video;
 
-      // 弾幕コンテナ（プレーヤー内）
+      // コメントコンテナ（プレーヤー内）
       const player = document.querySelector<HTMLElement>('#movie_player, .html5-video-player');
       if (!player) {
         setTimeout(init, 3000);
@@ -190,9 +190,9 @@ export default defineContentScript({
       // パネルUI（プレーヤー下）— コンテナ作成前にクリーンアップ
       destroyPanel();
 
-      const danmakuContainer = document.createElement('div');
-      danmakuContainer.id = 'danmaku-container';
-      player.appendChild(danmakuContainer);
+      const telopContainer = document.createElement('div');
+      telopContainer.id = 'telop-container';
+      player.appendChild(telopContainer);
       panelHost = document.createElement('div');
       positionPanel();
 
@@ -225,8 +225,8 @@ export default defineContentScript({
       }
 
       // Renderer
-      renderer = new DanmakuRenderer(state.config);
-      renderer.attach(danmakuContainer, video);
+      renderer = new TelopRenderer(state.config);
+      renderer.attach(telopContainer, video);
       renderer.start();
 
       initialized = true;
@@ -243,7 +243,7 @@ export default defineContentScript({
         setTimeout(fetchAndLoad, 2000);
       }
 
-      console.log('[YouTube Danmaku Player] v2.1 初期化完了');
+      console.log('[YouTube Timestamp Telop] v2.1 初期化完了');
     }
 
     // --- YouTube SPA navigation ---

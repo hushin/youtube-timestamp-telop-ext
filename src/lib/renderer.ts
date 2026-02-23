@@ -1,16 +1,16 @@
-import type { ActiveDanmaku, DanmakuComment, DanmakuConfig } from './types';
+import type { ActiveTelop, TimestampComment, TelopConfig } from './types';
 
 const FRAME_INTERVAL = 1000 / 24; // 24fps ≈ 41.67ms
 
-export class DanmakuRenderer {
+export class TelopRenderer {
   private container: HTMLDivElement | null = null;
-  private activeComments: ActiveDanmaku[] = [];
+  private activeComments: ActiveTelop[] = [];
   private lanes: number[] = [];
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private videoEl: HTMLVideoElement | null = null;
-  private config: DanmakuConfig;
+  private config: TelopConfig;
 
-  constructor(config: DanmakuConfig) {
+  constructor(config: TelopConfig) {
     this.config = config;
   }
 
@@ -35,13 +35,13 @@ export class DanmakuRenderer {
     }
   }
 
-  /** 弾幕を1つ発射 */
-  fire(comment: DanmakuComment): void {
+  /** コメントを1つ発射 */
+  fire(comment: TimestampComment): void {
     if (!this.container || !this.config.enabled) return;
     if (this.activeComments.length >= this.config.maxComments) return;
 
     const el = document.createElement('div');
-    el.className = 'danmaku-comment';
+    el.className = 'telop-comment';
     el.textContent = comment.text;
     const fontSize = this.getActualFontSize();
     el.style.fontSize = `${fontSize}px`;
@@ -73,7 +73,7 @@ export class DanmakuRenderer {
     });
   }
 
-  /** 全弾幕をクリア */
+  /** 全コメントをクリア */
   clear(): void {
     for (const c of this.activeComments) {
       c.el.remove();
@@ -81,7 +81,7 @@ export class DanmakuRenderer {
     this.activeComments = [];
   }
 
-  /** アクティブな弾幕数 */
+  /** アクティブなコメント数 */
   get activeCount(): number {
     return this.activeComments.length;
   }
@@ -89,7 +89,7 @@ export class DanmakuRenderer {
   // --- private ---
 
   private tick(): void {
-    // 動画が一時停止中 → 弾幕も一時停止
+    // 動画が一時停止中 → コメントも一時停止
     if (this.videoEl?.paused) {
       const now = performance.now();
       for (const c of this.activeComments) {

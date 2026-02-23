@@ -1,6 +1,6 @@
 ## プロジェクト概要
 
-YouTube のタイムスタンプ付きコメントをニコニコ風弾幕として再生する Chrome / Firefox 拡張機能。
+YouTube のタイムスタンプ付きコメントをニコニコ動画風の流れるコメントとして表示する Chrome / Firefox 拡張機能。
 
 ## コマンド
 
@@ -37,21 +37,21 @@ src/
     ├── config.ts            … 設定の読み書き（browser.storage）
     ├── parser.ts            … タイムスタンプ正規表現パース、重複除去
     ├── api.ts               … YouTube Data API v3 クライアント（ページネーション対応）
-    └── renderer.ts          … 弾幕エンジン（24fps setInterval、レーン管理、一時停止同期）
+    └── renderer.ts          … コメントエンジン（24fps setInterval、レーン管理、一時停止同期）
 ```
 
-- **content/index.ts** がオーケストレーター。各モジュールを結合し、動画の再生時刻を 200ms ごとに監視して弾幕を発射する
-- **state.svelte.ts** の `DanmakuState` が Svelte 5 runes（`$state`）でリアクティブなグローバル状態を管理
-- **App.svelte** がパネル UI を構築。`danmakuState` を直接参照し、`onFetch` / `onToggle` / `onSeek` コールバックで `index.ts` と疎結合
-- **renderer.ts** の `DanmakuRenderer` クラスが描画を担当。`setInterval(41.67ms)` = 24fps でアニメーション。動画が paused なら startTime をフレーム分ずらして弾幕を停止
+- **content/index.ts** がオーケストレーター。各モジュールを結合し、動画の再生時刻を 200ms ごとに監視してコメントを発射する
+- **state.svelte.ts** の `TelopState` が Svelte 5 runes（`$state`）でリアクティブなグローバル状態を管理
+- **App.svelte** がパネル UI を構築。`telopState` を直接参照し、`onFetch` / `onToggle` / `onSeek` コールバックで `index.ts` と疎結合
+- **renderer.ts** の `TelopRenderer` クラスが描画を担当。`setInterval(41.67ms)` = 24fps でアニメーション。動画が paused なら startTime をフレーム分ずらしてコメントを停止
 
 ## 重要な設計判断
 
 - **手動トリガーがデフォルト**: `config.autoFetch = false`。ユーザーが「コメント取得」ボタンを明示的に押す。設定で自動に切替可能
 - **YouTube Data API v3 使用**: DOM スクレイピングは YouTube の DOM 変更に脆弱なため API 方式を採用。API キーはユーザーが自分で取得して設定する
 - **24fps アニメーション**: `setInterval` ベース。`requestAnimationFrame` ではなく固定フレームレート
-- **レーン管理**: 弾幕が重ならないよう、空きレーンを時間ベースで管理。全レーン使用中なら最も早く空くレーンを使用
-- **一時停止同期**: 動画 pause 時に各弾幕の `startTime` を 1 フレーム分ずらすことで位置を凍結
+- **レーン管理**: コメントが重ならないよう、空きレーンを時間ベースで管理。全レーン使用中なら最も早く空くレーンを使用
+- **一時停止同期**: 動画 pause 時に各コメントの `startTime` を 1 フレーム分ずらすことで位置を凍結
 - **SPA 対応**: YouTube は SPA なので `setInterval(1000)` で URL 変更を監視し、動画遷移時にリセット＆再初期化
 - **WXT の `browser` グローバル**: `chrome.*` ではなく WXT が提供する `browser.*` API を使用（Chrome / Firefox 統一）
 
@@ -59,10 +59,10 @@ src/
 
 - TypeScript strict モード
 - Svelte 5 runes（`$state`, `$derived`, `$effect`）を使用。Options API 形式は使わない
-- DOM 操作は `App.svelte` に集約。`renderer.ts` の弾幕要素生成は例外
+- DOM 操作は `App.svelte` に集約。`renderer.ts` のコメント要素生成は例外
 - `browser.*` API の呼び出しは `config.ts` に集約
 - ランタイム外部ライブラリの依存はゼロ（Svelte は devDependencies でコンパイル時に消える）
-- CSS クラス名は `danmaku-` プレフィックス、ID は `danmaku-` プレフィックス
+- CSS クラス名は `telop-` プレフィックス、ID は `telop-` プレフィックス
 - フォーマットは `pnpm fmt`、リントは `pnpm lint`
 
 ## YouTube Data API の制約

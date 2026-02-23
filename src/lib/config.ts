@@ -1,9 +1,9 @@
-import type { DanmakuConfig } from './types';
+import type { TelopConfig } from './types';
 
-const STORAGE_KEY = 'danmaku_config';
+const STORAGE_KEY = 'telop_config';
 
 /** browser.storage に永続化するフィールド */
-const PERSISTED_KEYS: (keyof DanmakuConfig)[] = [
+const PERSISTED_KEYS: (keyof TelopConfig)[] = [
   'enabled',
   'fontSize',
   'opacity',
@@ -12,7 +12,7 @@ const PERSISTED_KEYS: (keyof DanmakuConfig)[] = [
   'apiKey',
 ];
 
-export const DEFAULT_CONFIG: DanmakuConfig = {
+export const DEFAULT_CONFIG: TelopConfig = {
   enabled: true,
   fontSize: 28,
   opacity: 0.85,
@@ -23,14 +23,14 @@ export const DEFAULT_CONFIG: DanmakuConfig = {
   apiKey: '',
 };
 
-export async function loadConfig(): Promise<DanmakuConfig> {
+export async function loadConfig(): Promise<TelopConfig> {
   const result = await browser.storage.local.get([STORAGE_KEY]);
-  const saved = result[STORAGE_KEY] as Partial<DanmakuConfig> | undefined;
+  const saved = result[STORAGE_KEY] as Partial<TelopConfig> | undefined;
   return { ...DEFAULT_CONFIG, ...saved };
 }
 
-export function saveConfig(config: DanmakuConfig): void {
-  const data: Partial<DanmakuConfig> = {};
+export function saveConfig(config: TelopConfig): void {
+  const data: Partial<TelopConfig> = {};
   for (const key of PERSISTED_KEYS) {
     (data as Record<string, unknown>)[key] = config[key];
   }

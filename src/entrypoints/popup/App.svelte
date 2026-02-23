@@ -1,18 +1,18 @@
 <script lang="ts">
-  import type { DanmakuConfig } from '../../lib/types'
+  import type { TelopConfig } from '../../lib/types'
 
   let apiKeySet = $state(false)
 
   $effect(() => {
-    browser.storage.local.get(['danmaku_config']).then((result) => {
-      const cfg = (result.danmaku_config ?? {}) as Partial<DanmakuConfig>
+    browser.storage.local.get(['telop_config']).then((result) => {
+      const cfg = (result.telop_config ?? {}) as Partial<TelopConfig>
       apiKeySet = !!cfg.apiKey
     })
   })
 </script>
 
-<h1>YouTube Danmaku Player</h1>
-<p class="subtitle">ニコニコ風弾幕コメント v2.1</p>
+<h1>YouTube Timestamp Telop</h1>
+<p class="subtitle">タイムスタンプ付きコメント v2.1</p>
 
 <div class="api-status" class:ok={apiKeySet} class:missing={!apiKeySet}>
   <span class="dot" class:green={apiKeySet} class:yellow={!apiKeySet}></span>
@@ -24,7 +24,7 @@
   <ul>
     <li>動画ページ下の「コメント取得」ボタンで開始</li>
     <li>YouTube Data API v3 でコメントを取得</li>
-    <li>タイムスタンプ付きコメントを弾幕で表示</li>
+    <li>タイムスタンプ付きコメントを流れるコメントで表示</li>
     <li>コメント一覧クリックでその時間にジャンプ</li>
     <li>設定でAPI Key入力・各種調整</li>
   </ul>
@@ -38,7 +38,7 @@
   </ul>
 </div>
 
-<div class="footer">v0.1.0 — YouTube Danmaku Player Extension</div>
+<div class="footer">v0.1.0 — YouTube Timestamp Telop Extension</div>
 
 <style>
   h1 {

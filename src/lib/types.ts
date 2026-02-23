@@ -1,8 +1,8 @@
 /** タイムスタンプ付きコメント */
-export interface DanmakuComment {
+export interface TimestampComment {
   /** 動画内の時刻（秒） */
   time: number;
-  /** 弾幕として表示するテキスト（60文字以内に省略済み） */
+  /** 表示するテキスト（60文字以内に省略済み） */
   text: string;
   /** リスト表示用の省略前テキスト */
   fullText: string;
@@ -12,8 +12,8 @@ export interface DanmakuComment {
   timeStr: string;
 }
 
-/** 画面上をアニメーション中の弾幕 */
-export interface ActiveDanmaku {
+/** 画面上をアニメーション中のコメント */
+export interface ActiveTelop {
   el: HTMLDivElement;
   startTime: number;
   totalDistance: number;
@@ -22,7 +22,7 @@ export interface ActiveDanmaku {
 }
 
 /** 永続化される設定 */
-export interface DanmakuConfig {
+export interface TelopConfig {
   enabled: boolean;
   fontSize: number;
   opacity: number;

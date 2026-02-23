@@ -5,9 +5,9 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-svelte'],
   manifest: {
-    name: 'YouTube Danmaku Player - ニコニコ風弾幕コメント',
+    name: 'YouTube Timestamp Telop - タイムスタンプコメント',
     version: '0.1.0',
-    description: 'YouTubeのタイムスタンプ付きコメントをニコニコ風弾幕として再生するブラウザ拡張',
+    description: 'YouTubeのタイムスタンプ付きコメントを流れるコメントとして表示するブラウザ拡張',
     permissions: ['storage'],
   },
 });

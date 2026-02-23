@@ -1,4 +1,4 @@
-import type { DanmakuComment } from './types';
+import type { TimestampComment } from './types';
 
 const TIMESTAMP_RE = /(\d{1,2}:\d{2}(?::\d{2})?)/g;
 
@@ -31,8 +31,11 @@ export function formatTime(seconds: number): string {
 /**
  * コメント文字列からタイムスタンプ付きコメントを抽出（最初の1件のみ）
  */
-export function extractTimestampedComments(commentText: string, author: string): DanmakuComment[] {
-  const results: DanmakuComment[] = [];
+export function extractTimestampedComments(
+  commentText: string,
+  author: string,
+): TimestampComment[] {
+  const results: TimestampComment[] = [];
   let match: RegExpExecArray | null;
 
   // lastIndex をリセット
@@ -56,7 +59,7 @@ export function extractTimestampedComments(commentText: string, author: string):
 /**
  * コメント配列をソート＋重複除去
  */
-export function deduplicateComments(comments: DanmakuComment[]): DanmakuComment[] {
+export function deduplicateComments(comments: TimestampComment[]): TimestampComment[] {
   comments.sort((a, b) => a.time - b.time);
 
   const seen = new Set<string>();

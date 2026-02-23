@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { danmakuState } from './state.svelte'
+  import { telopState } from './state.svelte'
   import { saveConfig } from '../../lib/config'
 
   interface Props {
@@ -11,7 +11,7 @@
   let { onFetch, onToggle, onSeek }: Props = $props()
 
   let settingsVisible = $state(false)
-  let apiKeyInput = $state(danmakuState.config.apiKey)
+  let apiKeyInput = $state(telopState.config.apiKey)
   let showApiKey = $state(false)
 
   let listEl = $state<HTMLDivElement | null>(null)
@@ -27,8 +27,8 @@
   let closestIndex = $derived.by(() => {
     let best = -1
     let bestDiff = Infinity
-    for (let i = 0; i < danmakuState.comments.length; i++) {
-      const diff = danmakuState.currentTime - danmakuState.comments[i].time
+    for (let i = 0; i < telopState.comments.length; i++) {
+      const diff = telopState.currentTime - telopState.comments[i].time
       if (diff >= 0 && diff < bestDiff && diff < 5) {
         bestDiff = diff
         best = i
@@ -51,9 +51,9 @@
   })
 
   function toggleDanmaku() {
-    danmakuState.config.enabled = !danmakuState.config.enabled
-    saveConfig(danmakuState.config)
-    onToggle(danmakuState.config.enabled)
+    telopState.config.enabled = !telopState.config.enabled
+    saveConfig(telopState.config)
+    onToggle(telopState.config.enabled)
   }
 
   function toggleSettings() {
@@ -61,63 +61,63 @@
   }
 
   function saveApiKey() {
-    danmakuState.config.apiKey = apiKeyInput.trim()
-    saveConfig(danmakuState.config)
+    telopState.config.apiKey = apiKeyInput.trim()
+    saveConfig(telopState.config)
   }
 
   function handleFontSize(e: Event) {
-    danmakuState.config.fontSize = parseInt((e.target as HTMLInputElement).value)
-    saveConfig(danmakuState.config)
+    telopState.config.fontSize = parseInt((e.target as HTMLInputElement).value)
+    saveConfig(telopState.config)
   }
 
   function handleOpacity(e: Event) {
-    danmakuState.config.opacity =
+    telopState.config.opacity =
       parseInt((e.target as HTMLInputElement).value) / 100
-    saveConfig(danmakuState.config)
+    saveConfig(telopState.config)
   }
 
   function handleSpeed(e: Event) {
-    danmakuState.config.speed = parseInt((e.target as HTMLInputElement).value)
-    saveConfig(danmakuState.config)
+    telopState.config.speed = parseInt((e.target as HTMLInputElement).value)
+    saveConfig(telopState.config)
   }
 
   function handleAutoFetch(e: Event) {
-    danmakuState.config.autoFetch = (e.target as HTMLInputElement).checked
-    saveConfig(danmakuState.config)
+    telopState.config.autoFetch = (e.target as HTMLInputElement).checked
+    saveConfig(telopState.config)
   }
 </script>
 
-<div id="danmaku-panel">
-  <div class="danmaku-panel-header">
+<div id="telop-panel">
+  <div class="telop-panel-header">
     <div class="dp-left">
-      <span class="dp-title">弾幕コメント</span>
+      <span class="dp-title">タイムスタンプコメント</span>
       <span
         class="dp-badge"
-        class:has-comments={danmakuState.comments.length > 0}
+        class:has-comments={telopState.comments.length > 0}
       >
-        {danmakuState.comments.length}件
+        {telopState.comments.length}件
       </span>
     </div>
     <div class="dp-right">
       <button
         class="dp-btn primary"
-        disabled={danmakuState.isLoading}
+        disabled={telopState.isLoading}
         onclick={onFetch}
       >
         コメント取得
       </button>
       <button
         class="dp-btn"
-        class:active={danmakuState.config.enabled}
+        class:active={telopState.config.enabled}
         onclick={toggleDanmaku}
       >
-        弾幕 {danmakuState.config.enabled ? 'ON' : 'OFF'}
+        コメント {telopState.config.enabled ? 'ON' : 'OFF'}
       </button>
       <button class="dp-btn" onclick={toggleSettings}>設定</button>
     </div>
   </div>
 
-  <div class="danmaku-settings-row" class:visible={settingsVisible}>
+  <div class="telop-settings-row" class:visible={settingsVisible}>
     <label class="api-key-group">
       API Key
       <input
@@ -138,10 +138,10 @@
         type="range"
         min="16"
         max="48"
-        value={danmakuState.config.fontSize}
+        value={telopState.config.fontSize}
         oninput={handleFontSize}
       />
-      <span class="setting-val">{danmakuState.config.fontSize}</span>
+      <span class="setting-val">{telopState.config.fontSize}</span>
     </label>
     <label>
       透明度
@@ -149,11 +149,11 @@
         type="range"
         min="20"
         max="100"
-        value={Math.round(danmakuState.config.opacity * 100)}
+        value={Math.round(telopState.config.opacity * 100)}
         oninput={handleOpacity}
       />
       <span class="setting-val"
-        >{Math.round(danmakuState.config.opacity * 100)}%</span
+        >{Math.round(telopState.config.opacity * 100)}%</span
       >
     </label>
     <label>
@@ -162,41 +162,41 @@
         type="range"
         min="3"
         max="15"
-        value={danmakuState.config.speed}
+        value={telopState.config.speed}
         oninput={handleSpeed}
       />
-      <span class="setting-val">{danmakuState.config.speed}s</span>
+      <span class="setting-val">{telopState.config.speed}s</span>
     </label>
     <label class="checkbox-label">
       <input
         type="checkbox"
-        checked={danmakuState.config.autoFetch}
+        checked={telopState.config.autoFetch}
         onchange={handleAutoFetch}
       />
       ページ読込時に自動取得
     </label>
   </div>
 
-  <div class="danmaku-status-bar" class:visible={danmakuState.statusVisible}>
-    {#if danmakuState.statusType === 'loading'}
-      <span class="spinner"></span> {danmakuState.statusMessage}
-    {:else if danmakuState.statusType === 'error'}
-      <span class="status-error">{danmakuState.statusMessage}</span>
+  <div class="telop-status-bar" class:visible={telopState.statusVisible}>
+    {#if telopState.statusType === 'loading'}
+      <span class="spinner"></span> {telopState.statusMessage}
+    {:else if telopState.statusType === 'error'}
+      <span class="status-error">{telopState.statusMessage}</span>
     {:else}
-      {danmakuState.statusMessage}
+      {telopState.statusMessage}
     {/if}
   </div>
 
-  <div class="danmaku-comment-list" bind:this={listEl} onscroll={handleUserScroll}>
-    {#if danmakuState.comments.length === 0}
+  <div class="telop-comment-list" bind:this={listEl} onscroll={handleUserScroll}>
+    {#if telopState.comments.length === 0}
       <div class="empty-state">
         <div class="empty-state-icon">💬</div>
         「コメント取得」ボタンを押すと<br />タイムスタンプ付きコメントを読み込みます
       </div>
     {:else}
-      {#each danmakuState.comments as comment, i}
+      {#each telopState.comments as comment, i}
         <div
-          class="danmaku-list-item"
+          class="telop-list-item"
           class:now-playing={i === closestIndex}
           onclick={() => onSeek(comment.time)}
           role="button"
