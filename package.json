@@ -1,5 +1,5 @@
 {
-  "name": "youtube-telop-player-ext",
+  "name": "youtube-timestamp-telop-ext",
   "version": "0.1.0",
   "private": true,
   "description": "YouTubeのタイムスタンプ付きコメントを流れるコメントとして表示するブラウザ拡張",
