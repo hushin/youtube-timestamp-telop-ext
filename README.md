@@ -121,4 +121,4 @@ youtube-timestamp-telop-ext/
 
 ## ライセンス
 
-MIT
+[MIT](LICENSE)
