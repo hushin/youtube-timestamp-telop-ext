@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.7",
+    "@wxt-dev/auto-icons": "^1.1.1",
     "@wxt-dev/module-svelte": "^2.0.4",
     "lefthook": "^2.1.1",
     "oxfmt": "^0.34.0",
