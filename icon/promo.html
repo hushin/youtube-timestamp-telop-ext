@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 880px;
+    height: 560px;
+    background: #0f0f0f;
+    overflow: hidden;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  /* Full-bleed player */
+  .player {
+    width: 880px;
+    height: 560px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Colorful video-like background */
+  .player-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 40%, rgba(120, 40, 160, 0.45) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 50%, rgba(30, 80, 180, 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(200, 40, 80, 0.3) 0%, transparent 50%),
+      linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+  }
+
+  /* Danmaku comments - uniform size and opacity */
+  .comment {
+    position: absolute;
+    white-space: nowrap;
+    font-weight: 900;
+    font-size: 36px;
+    color: #ffffff;
+    opacity: 0.95;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  }
+
+  /* Row 1 */
+  .c1  { top: 24px;  left: 80px; }
+  .c2  { top: 24px;  left: 500px; }
+  /* Row 2 */
+  .c3  { top: 80px;  left: 140px; }
+  .c4  { top: 80px;  left: 580px; }
+  /* Row 3 */
+  .c5  { top: 136px; left: 60px; }
+  .c6  { top: 136px; left: 440px; }
+  /* Row 4 */
+  .c7  { top: 192px; left: 180px; }
+  .c8  { top: 192px; left: 620px; }
+  /* Row 5 */
+  .c9  { top: 248px; left: 90px; }
+  .c10 { top: 248px; left: 520px; }
+  /* Row 6 */
+  .c11 { top: 304px; left: 220px; }
+  .c12 { top: 304px; left: 650px; }
+  /* Row 7 */
+  .c13 { top: 360px; left: 100px; }
+  .c14 { top: 360px; left: 560px; }
+  /* Row 8 */
+  .c15 { top: 416px; left: 160px; }
+  .c16 { top: 416px; left: 600px; }
+
+  /* Player bottom bar */
+  .player-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.9));
+    display: flex;
+    align-items: flex-end;
+    padding: 0 20px 12px;
+    gap: 14px;
+  }
+  .bar-play {
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 8px 0 8px 14px;
+    border-color: transparent transparent transparent #fff;
+    opacity: 0.8;
+  }
+  .bar-progress {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    position: relative;
+  }
+  .bar-progress-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 35%;
+    background: #ff0033;
+    border-radius: 2px;
+  }
+  .bar-time {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    font-weight: bold;
+  }
+
+  /* Icon badge - bottom right */
+  .icon-badge {
+    position: absolute;
+    bottom: 56px;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 27px;
+    background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.6),
+      0 0 0 2.5px rgba(255, 0, 51, 0.7);
+    overflow: hidden;
+    z-index: 10;
+  }
+  .icon-badge .bar {
+    position: absolute;
+    height: 10px;
+    border-radius: 3px;
+    background: #ffffff;
+  }
+  .ib1 { top: 24px; left: 8px; width: 66px; opacity: 0.95; }
+  .ib2 { top: 24px; left: 81px; width: 33px; opacity: 0.5; }
+  .ib3 { top: 40px; left: 21px; width: 81px; opacity: 0.85; background: #ff0033; }
+  .ib4 { top: 56px; left: 6px; width: 45px; opacity: 0.7; }
+  .ib5 { top: 56px; left: 60px; width: 54px; opacity: 0.45; }
+  .ib6 { top: 72px; left: 30px; width: 66px; opacity: 0.75; }
+  .icon-badge .badge-play {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 9px 0 9px 15px;
+    border-color: transparent transparent transparent #ff0033;
+    opacity: 0.8;
+  }
+  .icon-badge .badge-ts {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(255, 0, 51, 0.9);
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+  <div class="player">
+    <div class="player-bg"></div>
+
+    <!-- Danmaku comments -->
+    <div class="comment c1">ここ鳥肌たった</div>
+    <div class="comment c2">最高すぎる</div>
+    <div class="comment c3">何度見ても泣ける</div>
+    <div class="comment c4">神展開きた</div>
+    <div class="comment c5">センスの塊</div>
+    <div class="comment c6">ここからが本番</div>
+    <div class="comment c7">永遠にループしてる</div>
+    <div class="comment c8">わかる</div>
+    <div class="comment c9">天才かよ</div>
+    <div class="comment c10">まじで好き</div>
+    <div class="comment c11">もう100回見た</div>
+    <div class="comment c12">泣いた</div>
+    <div class="comment c13">これ伝説だわ</div>
+    <div class="comment c14">やばすぎ</div>
+    <div class="comment c15">全人類見て</div>
+    <div class="comment c16">鳥肌やば</div>
+
+    <!-- Bottom controls -->
+    <div class="player-bar">
+      <div class="bar-play"></div>
+      <div class="bar-progress"><div class="bar-progress-fill"></div></div>
+      <div class="bar-time">1:23 / 3:45</div>
+    </div>
+
+    <!-- Icon badge -->
+    <div class="icon-badge">
+      <div class="bar ib1"></div>
+      <div class="bar ib2"></div>
+      <div class="bar ib3"></div>
+      <div class="bar ib4"></div>
+      <div class="bar ib5"></div>
+      <div class="bar ib6"></div>
+      <div class="badge-play"></div>
+      <div class="badge-ts">1:23</div>
+    </div>
+  </div>
+</body>
+</html>
