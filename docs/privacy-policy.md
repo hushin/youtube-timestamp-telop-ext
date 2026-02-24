@@ -29,9 +29,18 @@ Last updated: 2026-02-24
 API キーを含むリクエストはユーザーのブラウザから直接 Google へ送信されます。
 開発者（拡張機能作者）のサーバーへのデータ送信は一切行いません。
 
+### データの削除
+
+保存されたデータ（API キー・表示設定）は、拡張機能のアンインストールまたは設定画面のリセット機能で削除できます。
+データはユーザーのブラウザ内にのみ存在し、外部サーバーには保存されません。
+
 ### データの第三者提供
 
 収集したデータを第三者に販売・提供・共有することはありません。
+
+### Google API の利用規約への準拠
+
+Google API から取得した情報の使用は、[Chrome Web Store ユーザーデータポリシー](https://developer.chrome.com/docs/webstore/program-policies/data-handling/)（Limited Use 要件を含む）に準拠します。
 
 ### リモートコード
 
@@ -65,9 +74,18 @@ This extension communicates **only with Google's YouTube Data API v3** (`www.goo
 Requests including the API key are sent directly from the user's browser to Google.
 No data is sent to the developer's servers.
 
+### Data Deletion
+
+Stored data (API key and display settings) can be deleted by uninstalling the extension or using the reset function in the settings screen.
+All data exists solely within the user's browser and is never stored on external servers.
+
 ### Third-Party Sharing
 
 We do not sell, share, or provide collected data to any third party.
+
+### Google API Services User Data Policy
+
+The use of information received from Google APIs will adhere to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/data-handling/), including the Limited Use requirements.
 
 ### Remote Code
 
